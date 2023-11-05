@@ -22,7 +22,7 @@ info:
     Both tokens are bound to explicit scopes that define the API functionality accessible to the token. Additionally, tokens are associated with a list of organisations that they are authorized to administer. Consequently, all API requests are strictly constrained within the boundaries of these predefined scopes and organisational permissions to ensure security and data integrity.
 
 
-    We recommend all partners and customers to review the authentication guidelines to understand the scope and limitations of their access tokens and to ensure compliant interaction with our APIs.
+    We recommend all partners and customers review the authentication guidelines to understand the scope and limitations of their access tokens and to ensure compliant interaction with our APIs.
 
 
     For any assistance or further information, please reach out to our support team.
