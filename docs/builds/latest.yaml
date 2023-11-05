@@ -5,6 +5,8 @@ info:
   description: |
     Welcome to the Inklass API documentation.
 
+    **Base API URL:** https://api.inklass.com.au
+
     **Current Documentation Scope:** Our documentation is continuously evolving. While we have made significant strides in detailing our APIs, several endpoints are still undergoing further development and documentation.
 
     **Authentication:** Access to the Inklass API endpoints is secured through bearer authentication. To access the API, you must use an access token generated via the Inklass web dashboard. Two types of access tokens are available:
@@ -54,6 +56,28 @@ paths:
               schema:
                 properties:
                   warnings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          description: 'eg: NOTIFICATION_ALREADY_SENT'
+                        description:
+                          type: string
+                          description: 'eg: A notification with this identifier has already been marked as sent.'
+                        remedies:
+                          type: array
+                          items:
+                            type: string
+                            description: 'eg: Removing config.identity.markAsSentId will no longer keep track of what notifications have been sent.'
+                        metadata:
+                          type: object
+                          properties:
+                            notificationId:
+                              type: string
+                              description: 'eg: custom-app-r4343jk34j34j3j4k43jkjk34'
+                  info:
                     type: array
       requestBody:
         $ref: '#/components/requestBodies/sendNotification'
