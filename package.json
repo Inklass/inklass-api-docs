@@ -1,6 +1,6 @@
 {
   "name": "inklass-api",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "dependencies": {
     "@redocly/cli": "^1.0.2",
     "@redocly/openapi-core": "^1.0.0-beta.109",
