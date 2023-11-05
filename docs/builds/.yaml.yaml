@@ -1,0 +1,372 @@
+openapi: 3.0.2
+info:
+  version: latest
+  title: Inklass API
+  description: |
+    Welcome to the Inklass API documentation.
+
+    **Current Documentation Scope:** Our documentation is continuously evolving. While we have made significant strides in detailing our APIs, several endpoints are still undergoing further development and documentation.
+
+    **Authentication:** Access to the Inklass API endpoints is secured through bearer authentication. To access the API, you must use an access token generated via the Inklass web dashboard. Two types of access tokens are available:
+    - App Token: Generated for an `API Application` with specific permissions; this can be whitelisted by ip.
+    - User Token: Generated for a standard user with personalised access rights (use only for testing).
+
+    Both tokens are bound to explicit scopes that define the API functionality accessible to the token. Additionally, tokens are associated with a list of organisations that they are authorized to administer. Consequently, all API requests are strictly constrained within the boundaries of these predefined scopes and organisational permissions to ensure security and data integrity.
+
+    We recommend all partners and customers to review the authentication guidelines to understand the scope and limitations of their access tokens and to ensure compliant interaction with our APIs.
+
+    For any assistance or further information, please reach out to our support team.
+  x-api-id: b6d54a99-75f4-48da-87c4-6f969e5923c2
+  x-audience: external-partner
+  contact:
+    name: Inklass Support
+    url: https://inklass.com.au
+    email: support@inklass.com.au
+  x-logo:
+    url: ./icon.png
+servers:
+  - url: https://api.inklass.com.au
+security:
+  - bearerAuth: []
+tags:
+  - name: notifications
+    x-displayName: Notifications
+    description: |
+      Use Inklass's infrastructure to send and manage custom notifications. Support for custom notification settings is WIP.
+paths:
+  /services/integrations/notifications/send:
+    post:
+      operationId: notificationPost
+      tags:
+        - notifications
+      summary: Send Notification
+      description: |
+        Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. Both are real-time either by a push service or websockets. It's often best to use both at the same time so the user has something to refer back to. Note that your audience reach is strictly limited by your access token scopes and organisationsIds.
+
+        **Required Scopes:** (one of)
+        - inklass.users.school-admin
+        - inklass.integrations.notifications.send
+      responses:
+        '200':
+          description: Notification request acknowlement and status
+          content:
+            application/json:
+              schema:
+                properties:
+                  warnings:
+                    type: array
+      requestBody:
+        $ref: '#/components/requestBodies/sendNotification'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        A JWT generated for a particular app or user.
+
+        This token allows the bearer to perform requests within the context of the
+        app/user for whom the token was generated. The JWT tokens have different scopes
+        to limit what endpoints can be used; it is recommended that only the strictly required 
+        scopes are allocated to an API app or user.
+
+        .
+  schemas:
+    notificationContext:
+      title: Notification Context
+      description: Contextual information for the notification delivery process.
+      type: object
+      required:
+        - provider
+        - type
+      properties:
+        provider:
+          type: string
+          description: Lowercase slug of the service providing the notification.
+          example: example-app
+        type:
+          type: string
+          description: Describes the type of notification, used for filtering by notification settings.
+          example: fixture-update
+        isDebug:
+          type: boolean
+          nullable: true
+          description: Flag indicating whether the notification is in debug mode and should not be sent to actual devices.
+          example: false
+    notificationIdentity:
+      title: Notification Identity
+      description: Identifiers for managing notification delivery and threading.
+      type: object
+      properties:
+        markAsSentId:
+          type: string
+          nullable: true
+          description: Unique identifier to mark a notification as sent. Prevents duplicate sending. Inklass will cancel the internal send request and return with a warning letting the client know that it has already attempted to send this notification. Do not use this unless needed as to slightly minimise performance issues. Internally, this will be combined with the provider declared in the context.
+          example: notif-12345
+        markAsSentIdExpiryDays:
+          type: number
+          nullable: true
+          description: The lifespan, in days, of the 'sent' mark before it expires and allows resending. This is required if the markAsSentId has been provided.
+          example: 14
+        collapseId:
+          type: string
+          nullable: true
+          description: Identifier to group similar notifications, allowing newer to replace older ones. This essentially works as a mechanism to update already sent notifications with more relevant information. Example, if keeping track of a fixture status, the user looking at the notification half an hour later should only see a single notification with the most recent update.
+          example: activity-3224-status
+        threadId:
+          type: string
+          nullable: true
+          description: Identifier linking related notifications into a single thread or conversation. This will group the notifications on device.
+          example: thread_12345
+    notificationAuthor:
+      title: Notification Author
+      description: Details of the author sending the notification.
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Unique identifier of the author.
+        name:
+          type: string
+          nullable: true
+          description: Full name of the author.
+        profileImageProvider:
+          type: string
+          description: |
+            Source of the author's profile image. Can be "schoolbox-profile" for Schoolbox managed images, "generic-url" for direct URL links, or "schoolbox-image-file-hash" for file-based images with a unique hash.
+          example: schoolbox-profile
+        profileImage:
+          type: string
+          description: This could be a hash or url depening on profileImageProvider.
+          example: https://example.com/images/author-profile.jpg
+    notificationPush:
+      title: Push Notification Data
+      description: Schema defining the properties of a push notification.
+      type: object
+      required:
+        - type
+        - body
+      properties:
+        type:
+          type: string
+          enum:
+            - communication-notification
+            - standard-notification
+            - live-activity-update
+            - background-task
+          description: The type of the notification.
+          example: communication-notification
+        customPayload:
+          type: object
+          nullable: true
+          additionalProperties: true
+          description: Arbitrary payload accompanying the notification for custom use cases. Keep null unless Inklass specifies otherwise.
+        title:
+          type: string
+          nullable: true
+          description: The title of the notification; only valid if type is "standard-notification".
+          example: Fixture Update
+        subtitle:
+          type: string
+          nullable: true
+          description: Additional context or secondary heading of the notification. Required if type is "communication-notification", otherwise recommended.
+          example: Sports Carnival Thu 12/4
+        body:
+          type: string
+          nullable: false
+          description: The content of the notification. Please limit to 300 characters.
+          example: The pineapple is a tropical plant with an edible fruit; it is the most economically significant plant in the family Bromeliaceae.
+        link:
+          type: string
+          nullable: true
+          description: A URL related to the content or action of the notification.
+          format: uri
+          example: https://google.com.au
+        author:
+          allOf:
+            - $ref: '#/components/schemas/notificationAuthor'
+            - type: object
+              nullable: true
+              description: Only relevant for "communication-notification" type notifications.
+    notificationNotification:
+      title: In-App Notification Data
+      description: Schema defining the properties of an in-app notification.
+      type: object
+      required:
+        - title
+        - expiryDays
+      properties:
+        title:
+          type: string
+          description: The markdown title of the notification. Please only use double astrixes for key lexemes; it is recommended that this technique be used as to make the notification more scannale for users, as well as look congruous with other notifications.
+          example: '**John Doe** has been marked **absent** for **Chess Club**'
+        body:
+          type: string
+          nullable: true
+          description: The content of the notification. Please limit to 300 characters.
+          example: The pineapple is a tropical plant with an edible fruit; it is the most economically significant plant in the family Bromeliaceae.
+        icon:
+          type: string
+          nullable: true
+          description: A arbitrary image URL of an appropriate icon to be displayed in app alongside the notification.
+          format: uri
+        expiryDays:
+          type: integer
+          nullable: false
+          description: The number of days from today until the notification is no longer available.
+        link:
+          type: string
+          nullable: true
+          description: A URL related to the content or action of the notification.
+          format: uri
+          example: https://google.com.au
+        author:
+          allOf:
+            - $ref: '#/components/schemas/notificationAuthor'
+            - type: object
+              nullable: true
+              description: Only relevant for "communication-notification" type notifications.
+        customPayload:
+          type: object
+          nullable: true
+          additionalProperties: true
+          description: Arbitrary payload accompanying the notification for custom use cases.
+    deviceAudience:
+      title: Notification Audience
+      description: Defines the target audience for the notification, allowing for specific user or device criteria. At least one property must be specified within 'user' or 'device'.
+      type: object
+      oneOf:
+        - properties:
+            user:
+              type: object
+              properties:
+                externalId:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: External identifier for the user, can be a single value or an array for matching any.
+                username:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Username of the user, can be a single value or an array for matching any.
+                schoolboxId:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Unique identifier within Schoolbox, can be a single value or an array for matching any.
+                yearLevel:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Year level of the user, can be a single value or an array for matching any.
+                organisationId:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Identifier of the user's organisation, can be a single value or an array for matching any.
+                parentsOfStudents:
+                  type: array
+                  description: Array of objects to filter for parents of students. Each student object can specify 'externalId', 'id', and 'schoolboxId'. A parent will be matched if at least one student matches.
+                  items:
+                    type: object
+                    properties:
+                      externalId:
+                        type: string
+                        description: External identifier for the student, can be a single string or an array for matching any.
+                      id:
+                        type: string
+                        description: Identifier for the student, can be a single string or an array for matching any.
+                      schoolboxId:
+                        type: string
+                        description: Schoolbox identifier for the student, can be a single string or an array for matching any.
+                    minProperties: 1
+              minProperties: 1
+        - properties:
+            device:
+              type: object
+              properties:
+                pushToken:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Push token for the device, can be a single value or an array for matching any.
+                username:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Associated username for the device, can be a single value or an array for matching any.
+                isTestFlight:
+                  type: boolean
+                  description: Flag to indicate if the device is using a TestFlight build.
+                pushNotificationStatus:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Status of push notification settings on the device, can be a single value or an array for matching any.
+                schoolId:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Identifier for the school related to the device, can be a single value or an array for matching any.
+                deviceUUID:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Unique device identifier, can be a single value or an array for matching any.
+                appId:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Application identifier for the device, can be a single value or an array for matching any.
+                platform:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Operating platform of the device, can be a single value or an array for matching any. 'apple' or 'android'
+              minProperties: 1
+  requestBodies:
+    sendNotification:
+      description: |
+        Refer to schema definition.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              context:
+                $ref: '#/components/schemas/notificationContext'
+              identity:
+                $ref: '#/components/schemas/notificationIdentity'
+              push:
+                $ref: '#/components/schemas/notificationPush'
+              notification:
+                $ref: '#/components/schemas/notificationNotification'
+              audience:
+                $ref: '#/components/schemas/deviceAudience'
