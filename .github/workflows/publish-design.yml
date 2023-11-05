@@ -15,7 +15,7 @@ on:
       - docs/builds.json
 jobs:
   build:
-    if: github.repository == 'alaress/schoolbox-api-docs'
+    if: github.repository == 'Brahmah/inklass-api-docs'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

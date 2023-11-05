@@ -8,7 +8,7 @@ properties:
 
     title:
         type: string
-        description: The markdown title of the notification. Please only use double astrixes for key lexemes; it is recommended that this technique be used as to make the notification more scannale for users, as well as look congruous with other notifications.
+        description: The markdown title of the notification. Please use double asterisks for important lexemes as to improve notification scannability for users, as well as look congruous with other notifications.
         example: "**John Doe** has been marked **absent** for **Chess Club**"
 
     body:
@@ -40,7 +40,6 @@ properties:
             - $ref: './notificationAuthor.yaml'
             - type: object
               nullable: true
-              description: Only relevant for "communication-notification" type notifications.
 
     customPayload:
         type: object
