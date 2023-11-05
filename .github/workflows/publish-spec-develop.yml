@@ -32,6 +32,7 @@ jobs:
           rm -rf .staging/
 
           # Build the docs (do not set beta specs as the most recently selected)
+          npm i
           npm ci
           npm run rebuild-builds-list
           npm run build --build-version=${{ github.ref_name }}
