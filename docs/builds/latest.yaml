@@ -13,7 +13,7 @@ info:
 
     Both tokens are bound to explicit scopes that define the API functionality accessible to the token. Additionally, tokens are associated with a list of organisations that they are authorized to administer. Consequently, all API requests are strictly constrained within the boundaries of these predefined scopes and organisational permissions to ensure security and data integrity.
 
-    We recommend all partners and customers to review the authentication guidelines to understand the scope and limitations of their access tokens and to ensure compliant interaction with our APIs.
+    We recommend all partners and customers review the authentication guidelines to understand the scope and limitations of their access tokens and to ensure compliant interaction with our APIs.
 
     For any assistance or further information, please reach out to our support team.
   x-api-id: b6d54a99-75f4-48da-87c4-6f969e5923c2
@@ -41,7 +41,7 @@ paths:
         - notifications
       summary: Send Notification
       description: |
-        Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. Both are real-time either by a push service or websockets. It's often best to use both at the same time so the user has something to refer back to. Note that your audience reach is strictly limited by your access token scopes and organisationsIds.
+        Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. Both are real-time either by a push service or websockets. It may be best to use both at the same time so the user has something to refer back to. Note that your audience reach is strictly limited by your access token scopes and organisationsIds.
 
         **Required Scopes:** (one of)
         - inklass.users.school-admin
@@ -102,17 +102,17 @@ components:
         markAsSentId:
           type: string
           nullable: true
-          description: Unique identifier to mark a notification as sent. Prevents duplicate sending. Inklass will cancel the internal send request and return with a warning letting the client know that it has already attempted to send this notification. Do not use this unless needed as to slightly minimise performance issues. Internally, this will be combined with the provider declared in the context.
+          description: Unique identifier to mark a notification as sent. Prevents duplicate sending. Inklass will cancel the internal send request and return with a warning letting the client know that it has already attempted to send this notification. Keep null if not required as to improve efficiency. Internally, this will be combined with the provider declared in the context.
           example: notif-12345
         markAsSentIdExpiryDays:
           type: number
           nullable: true
-          description: The lifespan, in days, of the 'sent' mark before it expires and allows resending. This is required if the markAsSentId has been provided.
+          description: The lifespan, in days, of the 'sent' mark before it expires and allows resending. This is required if the markAsSentId has been provided. This should typically never exceed 14 days before garbadge collection.
           example: 14
         collapseId:
           type: string
           nullable: true
-          description: Identifier to group similar notifications, allowing newer to replace older ones. This essentially works as a mechanism to update already sent notifications with more relevant information. Example, if keeping track of a fixture status, the user looking at the notification half an hour later should only see a single notification with the most recent update.
+          description: Identifier to group similar notifications, allowing newer to replace older ones. This essentially works as a mechanism to update already sent push and in-app notifications with more relevant information. Example, if keeping track of a fixture status, the user looking at the notification half-an-hour later should only see a single notification with the most recent update.
           example: activity-3224-status
         threadId:
           type: string
@@ -127,7 +127,7 @@ components:
         id:
           type: string
           nullable: true
-          description: Unique identifier of the author.
+          description: Any unique identifier of the author, preferably an externalId or other system id.
         name:
           type: string
           nullable: true
@@ -135,11 +135,11 @@ components:
         profileImageProvider:
           type: string
           description: |
-            Source of the author's profile image. Can be "schoolbox-profile" for Schoolbox managed images, "generic-url" for direct URL links, or "schoolbox-image-file-hash" for file-based images with a unique hash.
+            Source of the author's profile image. Can be "schoolbox-profile" for Schoolbox managed portrait images, "generic-url" for direct URL links, or "schoolbox-image-file-hash" for file-based fetch images with a unique hash.
           example: schoolbox-profile
         profileImage:
           type: string
-          description: This could be a hash or url depening on profileImageProvider.
+          description: This could be a hash or url depening on profileImageProvider. The app notification extention will handle downloading the image.
           example: https://example.com/images/author-profile.jpg
     notificationPush:
       title: Push Notification Data
@@ -200,7 +200,7 @@ components:
       properties:
         title:
           type: string
-          description: The markdown title of the notification. Please only use double astrixes for key lexemes; it is recommended that this technique be used as to make the notification more scannale for users, as well as look congruous with other notifications.
+          description: The markdown title of the notification. Please use double asterisks for important lexemes as to improve notification scannability for users, as well as look congruous with other notifications.
           example: '**John Doe** has been marked **absent** for **Chess Club**'
         body:
           type: string
@@ -227,7 +227,6 @@ components:
             - $ref: '#/components/schemas/notificationAuthor'
             - type: object
               nullable: true
-              description: Only relevant for "communication-notification" type notifications.
         customPayload:
           type: object
           nullable: true
