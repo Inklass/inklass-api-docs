@@ -1,0 +1,15 @@
+{
+  "name": "inklass-api",
+  "version": "1.2.11",
+  "dependencies": {
+    "@redocly/cli": "^1.0.2",
+    "@redocly/openapi-core": "^1.0.0-beta.109",
+    "semver": "^7.3.7"
+  },
+  "private": true,
+  "scripts": {
+    "build": "redocly lint && redocly bundle -o docs/builds/latest.yaml && ./scripts/addBuild.js latest ${npm_config_selected} && ./scripts/applyVersion.js latest docs/builds/latest.yaml",
+    "rebuild-builds-list": "./scripts/rebuildBuildsList.js",
+    "test": "redocly lint"
+  }
+}

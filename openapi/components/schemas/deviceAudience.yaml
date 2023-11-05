@@ -1,0 +1,118 @@
+title: Notification Audience
+description: Defines the target audience for the notification, allowing for specific user or device criteria. At least one property must be specified within 'user' or 'device'.
+type: object
+oneOf:
+  - properties:
+      user:
+        type: object
+        properties:
+          externalId:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: External identifier for the user, can be a single value or an array for matching any.
+          username:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Username of the user, can be a single value or an array for matching any.
+          schoolboxId:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Unique identifier within Schoolbox, can be a single value or an array for matching any.
+          yearLevel:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Year level of the user, can be a single value or an array for matching any.
+          organisationId:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Identifier of the user's organisation, can be a single value or an array for matching any.
+          parentsOfStudents:
+            type: array
+            description: Array of objects to filter for parents of students. Each student object can specify 'externalId', 'id', and 'schoolboxId'. A parent will be matched if at least one student matches.
+            items:
+              type: object
+              properties:
+                externalId:
+                  type: string
+                  description: External identifier for the student, can be a single string or an array for matching any.
+                id:
+                  type: string
+                  description: Identifier for the student, can be a single string or an array for matching any.
+                schoolboxId:
+                  type: string
+                  description: Schoolbox identifier for the student, can be a single string or an array for matching any.
+              minProperties: 1
+
+        minProperties: 1
+  - properties:
+      device:
+        type: object
+        properties:
+          pushToken:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Push token for the device, can be a single value or an array for matching any.
+          username:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Associated username for the device, can be a single value or an array for matching any.
+          isTestFlight:
+            type: boolean
+            description: Flag to indicate if the device is using a TestFlight build.
+          pushNotificationStatus:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Status of push notification settings on the device, can be a single value or an array for matching any.
+          schoolId:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Identifier for the school related to the device, can be a single value or an array for matching any.
+          deviceUUID:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Unique device identifier, can be a single value or an array for matching any.
+          appId:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Application identifier for the device, can be a single value or an array for matching any.
+          platform:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            description: Operating platform of the device, can be a single value or an array for matching any. 'apple' or 'android'
+        minProperties: 1

@@ -1,0 +1,56 @@
+title: Push Notification Data
+description: Schema defining the properties of a push notification.
+type: object
+required:
+  - type
+  - body
+properties:
+
+  type:
+    type: string
+    enum:
+      - "communication-notification"
+      - "standard-notification"
+      - "live-activity-update"
+      - "background-task"
+    description: The type of the notification.
+    example: "communication-notification"
+
+  customPayload:
+    type: object
+    nullable: true
+    additionalProperties: true
+    description: Arbitrary payload accompanying the notification for custom use cases. Keep null unless Inklass specifies otherwise.
+
+  title:
+    type: string
+    nullable: true
+    description: The title of the notification; only valid if type is "standard-notification".
+    example: "Fixture Update"
+
+  subtitle:
+    type: string
+    nullable: true
+    description: Additional context or secondary heading of the notification. Required if type is "communication-notification", otherwise recommended.
+    example: "Sports Carnival Thu 12/4"
+
+  body:
+    type: string
+    nullable: false
+    description: The content of the notification. Please limit to 300 characters.
+    example: "The pineapple is a tropical plant with an edible fruit; it is the most economically significant plant in the family Bromeliaceae."
+
+  link:
+    type: string
+    nullable: true
+    description: A URL related to the content or action of the notification.
+    format: uri
+    example: "https://google.com.au"
+
+  author:
+    allOf:
+      - $ref: './notificationAuthor.yaml'
+      - type: object
+        nullable: true
+        description: Only relevant for "communication-notification" type notifications.
+

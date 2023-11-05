@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Inklass API Reference</title>
+    <!-- needed for adaptive design -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="./icon.png">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        img-src 'self' data:;
+        script-src 'self' unpkg.com;
+        style-src 'self' 'unsafe-inline';
+        font-src 'self' fonts.googleapis.com fonts.gstatic.com
+      "
+    >
+    <script type="module" src="https://unpkg.com/rapidoc@9.3.4/dist/rapidoc-min.js"></script>
+    <script type="text/javascript" src="/scripts.js"></script>
+  </head>
+  <body>
+  <rapi-doc
+          id="rapidoc"
+          theme="light"
+          schema-style="tree"
+          default-schema-tab="schema"
+          show-header="false"
+          schema-description-expanded="true"
+          show-method-in-nav-bar="as-colored-block"
+          bg-color="#ffffff"
+          nav-bg-color="#f5f5f5"
+          primary-color="#2f6ba0"
+          render-style="read"
+          allow-server-selection="false"
+  >
+    <img slot="nav-logo" src="/logo.png" style="margin: 40px 30px; max-width: 250px"/>
+    <div slot="nav-logo" class="version-selector" style="display: none">
+      <label for="version-selector">Version:</label>
+      <select id="version-selector"></select>
+    </div>
+  </rapi-doc>
+  </body>
+</html>

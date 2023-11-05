@@ -1,0 +1,59 @@
+openapi: 3.0.2
+
+info:
+  version: 'latest'
+  title: Inklass API
+  description: >
+    Welcome to the Inklass API documentation.
+
+
+    **Current Documentation Scope:**
+    Our documentation is continuously evolving. While we have made significant strides in detailing our APIs, several endpoints are still undergoing further development and documentation.
+
+
+    **Authentication:**
+    Access to the Inklass API endpoints is secured through bearer authentication. To access the API, you must use an access token generated via the Inklass web dashboard. Two types of access tokens are available:
+
+    - App Token: Generated for an `API Application` with specific permissions; this can be whitelisted by ip.
+    
+    - User Token: Generated for a standard user with personalised access rights (use only for testing).
+
+
+    Both tokens are bound to explicit scopes that define the API functionality accessible to the token. Additionally, tokens are associated with a list of organisations that they are authorized to administer. Consequently, all API requests are strictly constrained within the boundaries of these predefined scopes and organisational permissions to ensure security and data integrity.
+
+
+    We recommend all partners and customers review the authentication guidelines to understand the scope and limitations of their access tokens and to ensure compliant interaction with our APIs.
+
+
+    For any assistance or further information, please reach out to our support team.
+
+  x-api-id:    b6d54a99-75f4-48da-87c4-6f969e5923c2
+  x-audience:  external-partner
+  contact:
+    name:  Inklass Support
+    url:   https://inklass.com.au
+    email: support@inklass.com.au
+  x-logo:
+    url: './icon.png'
+
+tags:
+  - name: notifications
+    x-displayName: Notifications
+    description: |
+      Use Inklass's infrastructure to send and manage custom notifications. Support for custom notification settings is WIP.
+
+servers:
+  - url: https://api.inklass.com.au
+
+paths:
+
+  /services/integrations/notifications/send:
+    $ref: 'paths/integrations@notifications@send.yaml'
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: components/securitySchemes/bearerAuth.yaml

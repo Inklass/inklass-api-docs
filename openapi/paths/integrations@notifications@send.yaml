@@ -1,0 +1,21 @@
+post:
+  operationId: notificationPost
+  tags: [notifications]
+  summary: Send Notification
+  description: |
+    Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. Both are real-time either by a push service or websockets. It may be best to use both at the same time so the user has something to refer back to. Note that your audience reach is strictly limited by your access token scopes and organisationsIds.
+    
+    **Required Scopes:** (one of)
+    - inklass.users.school-admin
+    - inklass.integrations.notifications.send
+  responses:
+    '200':
+      description: Notification request acknowlement and status
+      content:
+        application/json:
+          schema:
+            properties:
+              warnings:
+                type: array
+  requestBody:
+    $ref: '../components/requestBodies/sendNotification.yaml'

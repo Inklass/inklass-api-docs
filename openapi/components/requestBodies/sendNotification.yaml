@@ -1,0 +1,17 @@
+description: |
+  Refer to schema definition.
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        context:
+          $ref: ../schemas/notificationContext.yaml
+        identity:
+          $ref: ../schemas/notificationIdentity.yaml
+        push:
+          $ref: ../schemas/notificationPush.yaml
+        notification:
+         $ref: ../schemas/notificationNotification.yaml
+        audience:
+          $ref: ../schemas/deviceAudience.yaml

@@ -1,0 +1,23 @@
+title: Notification Context
+description: Contextual information for the notification delivery process.
+type: object
+required:
+  - provider
+  - type
+properties:
+
+  provider:
+    type: string
+    description: Lowercase slug of the service providing the notification.
+    example: "example-app"
+
+  type:
+    type: string
+    description: Describes the type of notification, used for filtering by notification settings.
+    example: "fixture-update"
+
+  isDebug:
+    type: boolean
+    nullable: true
+    description: Flag indicating whether the notification is in debug mode and should not be sent to actual devices.
+    example: false
