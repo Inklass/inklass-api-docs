@@ -1,0 +1,25 @@
+patch:
+  operationId: filePatch
+  tags: [file]
+  summary: Update visibility of a file
+  parameters:
+    - name: fileId
+      in: path
+      description: The ID of the file.
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      $ref: ../components/responses/file-item.yaml
+    default:
+      $ref: ../components/responses/problem.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            hidden:
+              type: boolean
+              example: false

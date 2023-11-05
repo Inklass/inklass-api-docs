@@ -1,0 +1,17 @@
+title: Evidence
+type: object
+properties:
+  discriminator:
+    type: string
+    description: evidence - discriminator for Evidence object
+    example: evidence
+  object:
+    $ref: ./evidenceItem.yaml
+  date:
+    type: string
+    format: date-time
+    description: |
+      The date as a RFC3339 string.
+    example: 2022-08-30T10:09:09+10:00
+required:
+  - discriminator

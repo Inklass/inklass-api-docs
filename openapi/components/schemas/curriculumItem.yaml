@@ -1,0 +1,13 @@
+title: a Curriculum Code
+description: A Curriculm Code
+readOnly: true
+type: object
+properties:
+  id:
+    $ref: ./id.yaml
+  name:
+    type: string
+    example: Self-awareness
+  code:
+    type: string
+    example: GCPSC-SEA

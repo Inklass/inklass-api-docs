@@ -1,0 +1,24 @@
+post:
+  operationId: postCalendarEventAttendanceCreate
+  tags: [calendar]
+  summary: Invite attendees to an event
+  description: |
+    Create invitations to the given event, for the given set of users.
+  responses:
+    '200':
+      $ref: ../components/responses/calendarAttendance-item.yaml
+    default:
+      $ref: ../components/responses/problem.yaml
+  requestBody:
+    required: true
+    content:
+      application/x-www-form-urlencoded:
+        schema:
+          type: object
+          properties:
+            guests:
+              description: |
+                A comma separated list of user IDs to invite to this event.
+              type: string
+  parameters:
+    - $ref: ../components/parameters/id.yaml
