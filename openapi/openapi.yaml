@@ -5,6 +5,10 @@ info:
   title: Inklass API
   description: >
     Welcome to the Inklass API documentation.
+    
+    
+    **Base API URL:**
+    https://api.inklass.com.au
 
 
     **Current Documentation Scope:**

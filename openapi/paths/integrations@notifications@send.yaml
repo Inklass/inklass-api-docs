@@ -17,5 +17,27 @@ post:
             properties:
               warnings:
                 type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: "eg: NOTIFICATION_ALREADY_SENT"
+                    description:
+                      type: string
+                      description: 'eg: A notification with this identifier has already been marked as sent.'
+                    remedies:
+                      type: array
+                      items:
+                        type: string
+                        description: 'eg: Removing config.identity.markAsSentId will no longer keep track of what notifications have been sent.'
+                    metadata:
+                      type: object
+                      properties:
+                        notificationId:
+                          type: string
+                          description: 'eg: custom-app-r4343jk34j34j3j4k43jkjk34'
+              info:
+                type: array
   requestBody:
     $ref: '../components/requestBodies/sendNotification.yaml'
