@@ -1,0 +1,49 @@
+title: In-App Notification Data
+description: Schema defining the properties of an in-app notification.
+type: object
+required:
+    - title
+    - expiryDays
+properties:
+
+    title:
+        type: string
+        description: The markdown title of the notification. Please only use double astrixes for key lexemes; it is recommended that this technique be used as to make the notification more scannale for users, as well as look congruous with other notifications.
+        example: "**John Doe** has been marked **absent** for **Chess Club**"
+
+    body:
+        type: string
+        nullable: true
+        description: The content of the notification. Please limit to 300 characters.
+        example: "The pineapple is a tropical plant with an edible fruit; it is the most economically significant plant in the family Bromeliaceae."
+
+    icon:
+        type: string
+        nullable: true
+        description: A arbitrary image URL of an appropriate icon to be displayed in app alongside the notification.
+        format: uri
+
+    expiryDays:
+        type: integer
+        nullable: false
+        description: The number of days from today until the notification is no longer available.
+
+    link:
+        type: string
+        nullable: true
+        description: A URL related to the content or action of the notification.
+        format: uri
+        example: "https://google.com.au"
+
+    author:
+        allOf:
+            - $ref: './notificationAuthor.yaml'
+            - type: object
+              nullable: true
+              description: Only relevant for "communication-notification" type notifications.
+
+    customPayload:
+        type: object
+        nullable: true
+        additionalProperties: true
+        description: Arbitrary payload accompanying the notification for custom use cases.

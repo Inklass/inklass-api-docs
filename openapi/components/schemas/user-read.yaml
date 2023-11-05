@@ -1,5 +1,0 @@
-title: User
-type: object
-allOf:
-  - $ref: ./user-readableFields.yaml
-  - $ref: ./user-fields.yaml

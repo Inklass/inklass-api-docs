@@ -1,0 +1,28 @@
+title: Notification Identity
+description: Identifiers for managing notification delivery and threading.
+type: object
+properties:
+
+  markAsSentId:
+    type: string
+    nullable: true
+    description: Unique identifier to mark a notification as sent. Prevents duplicate sending. Inklass will cancel the internal send request and return with a warning letting the client know that it has already attempted to send this notification. Do not use this unless needed as to slightly minimise performance issues. Internally, this will be combined with the provider declared in the context.
+    example: "notif-12345"
+
+  markAsSentIdExpiryDays:
+    type: number
+    nullable: true
+    description: The lifespan, in days, of the 'sent' mark before it expires and allows resending. This is required if the markAsSentId has been provided.
+    example: 14
+
+  collapseId:
+    type: string
+    nullable: true
+    description: Identifier to group similar notifications, allowing newer to replace older ones. This essentially works as a mechanism to update already sent notifications with more relevant information. Example, if keeping track of a fixture status, the user looking at the notification half an hour later should only see a single notification with the most recent update.
+    example: "activity-3224-status"
+
+  threadId:
+    type: string
+    nullable: true
+    description: Identifier linking related notifications into a single thread or conversation. This will group the notifications on device.
+    example: "thread_12345"

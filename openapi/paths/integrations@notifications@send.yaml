@@ -1,54 +1,21 @@
-get:
-  operationId: userGet
-  tags: [user]
-  summary: Get a user
+post:
+  operationId: notificationPost
+  tags: [notifications]
+  summary: Send Notification
   description: |
-    Returns all the information about a specific user. The result from this API can be passed into the update user endpoint. This endpoint may only be used by the current user or superusers.
+    Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. Both are real-time either by a push service or websockets. It's often best to use both at the same time so the user has something to refer back to. Note that your audience reach is strictly limited by your access token scopes and organisationsIds.
+    
+    **Required Scopes:** (one of)
+    - inklass.users.school-admin
+    - inklass.integrations.notifications.send
   responses:
     '200':
-      $ref: ../components/responses/user-item.yaml
-    default:
-      $ref: ../components/responses/problem.yaml
-
-put:
-  operationId: userPut
-  tags: [user]
-  summary: Update a user
-  description: |
-    This allows a user to be updated by passing in a user object. When using this endpoint you must provide the entire user, we recommend you get the user first via the "get a user" endpoint. This endpoint may only be used by superusers.
-  responses:
-    '200':
-      $ref: ../components/responses/user-item.yaml
-    default:
-      $ref: ../components/responses/problem.yaml
+      description: Notification request acknowlement and status
+      content:
+        application/json:
+          schema:
+            properties:
+              warnings:
+                type: array
   requestBody:
-    $ref: ../components/requestBodies/user-item.yaml
-
-patch:
-  operationId: userPatch
-  tags: [user]
-  summary: Partially update a user
-  description: |
-    This allows you to update specific fields of a user without needing to provide all the fields. By providing a partial user object, only the fields provided will be updated. The remaining fields will be left as they were. This endpoint may only be used by superusers.
-  responses:
-    '200':
-      $ref: ../components/responses/user-item.yaml
-    default:
-      $ref: ../components/responses/problem.yaml
-  requestBody:
-    $ref: ../components/requestBodies/user-item.yaml
-
-delete:
-  operationId: userDelete
-  tags: [user]
-  summary: Delete a user
-  description: |
-    This will soft-delete a user from the system.  A soft-deleted user will no longer be visible in the system, but the data will remain. This endpoint may only be used by superusers.
-  responses:
-    '204':
-      description: The resource was deleted successfully.
-    default:
-      $ref: ../components/responses/problem.yaml
-
-parameters:
-  - $ref: ../components/parameters/id.yaml
+    $ref: '../components/requestBodies/sendNotification.yaml'

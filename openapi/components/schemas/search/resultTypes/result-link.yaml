@@ -1,7 +1,0 @@
-allOf:
-  - $ref: ./common.yaml
-  - type: object
-    title: Link search result
-    properties:
-      type:
-        enum: [link]

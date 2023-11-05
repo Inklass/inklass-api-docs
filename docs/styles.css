@@ -1,5 +1,5 @@
 .version-selector {
     padding: revert;
-    display: flex;
+    display: none;
     justify-content: center;
 }

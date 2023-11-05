@@ -2,7 +2,11 @@ type:         http
 scheme:       bearer
 bearerFormat: JWT
 description: |
-  A JWT generated for a particular user.
+  A JWT generated for a particular app or user.
 
   This token allows the bearer to perform requests within the context of the
-  user for whom the token was generated.
+  app/user for whom the token was generated. The JWT tokens have different scopes
+  to limit what endpoints can be used; it is recommended that only the strictly required 
+  scopes are allocated to an API app or user.
+  
+  .
