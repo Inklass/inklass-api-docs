@@ -18,7 +18,7 @@ properties:
   collapseId:
     type: string
     nullable: true
-    description: Identifier to group similar notifications, allowing newer to replace older ones. This essentially works as a mechanism to update already sent push and in-app notifications with more relevant information. Example, if keeping track of a fixture status, the user looking at the notification half-an-hour later should only see a single notification with the most recent update.
+    description: Identifier to group similar notifications, allowing newer to replace older ones. This essentially works as a mechanism to update already sent push and in-app notifications with more relevant information. Example, if keeping track of a fixture status, the user looking at the notification half-an-hour later should only see a single notification with the most recent update. Just note that this is not supported in all contexts.
     example: "activity-3224-status"
 
   threadId:

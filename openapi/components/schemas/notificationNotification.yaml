@@ -20,7 +20,7 @@ properties:
     icon:
         type: string
         nullable: true
-        description: A arbitrary image URL of an appropriate icon to be displayed in app alongside the notification.
+        description: A arbitrary image URL of an appropriate icon to be displayed in app alongside the notification. It is highly recommended this is used, ideally with a custom icon for that notification type.
         format: uri
 
     expiryDays:
@@ -31,7 +31,7 @@ properties:
     link:
         type: string
         nullable: true
-        description: A URL related to the content or action of the notification.
+        description: A URL related to the content or action of the notification. If a push notification is being sent alongside this notification, the links should be verbatim across both. Examples can include '/news/617', 'inklass://clipboard/sessions?id=499160', or 'https://google.com'
         format: uri
         example: "https://google.com.au"
 
