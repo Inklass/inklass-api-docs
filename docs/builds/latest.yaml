@@ -43,7 +43,17 @@ paths:
         - notifications
       summary: Send Notification
       description: |
-        Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. Both are real-time either by a push service or websockets. It may be best to use both at the same time so the user has something to refer back to. Note that your audience reach is strictly limited by your access token scopes and organisationsIds.
+        Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. 
+
+
+        Both are real-time either by a push service or websockets. It may be best to use both at the same time so the user has something to refer back to. 
+
+        In-app notifications are assigned an internal identifier to track if they have been marked as read by the user. 
+        Internally, notifications are targeted by device, even if audienced via user as the audience is resolved at the time of sending.
+        Devices are grouped by an Inklass userId, each Inklass user is linked to platform-specific users. When a notification is marked as read by a device,
+        devices with the same userId will also mark that notification as read in real-time. An undocumented API is available for fetching notification recipients with their read/send status.
+
+        Note that your audience reach is strictly limited by your access token scopes and (organisationsIds or organisationsUUIDs).
 
         **Required Scopes:** (one of)
         - inklass.users.school-admin
@@ -136,7 +146,7 @@ components:
         collapseId:
           type: string
           nullable: true
-          description: Identifier to group similar notifications, allowing newer to replace older ones. This essentially works as a mechanism to update already sent push and in-app notifications with more relevant information. Example, if keeping track of a fixture status, the user looking at the notification half-an-hour later should only see a single notification with the most recent update.
+          description: Identifier to group similar notifications, allowing newer to replace older ones. This essentially works as a mechanism to update already sent push and in-app notifications with more relevant information. Example, if keeping track of a fixture status, the user looking at the notification half-an-hour later should only see a single notification with the most recent update. Just note that this is not supported in all contexts.
           example: activity-3224-status
         threadId:
           type: string
@@ -159,7 +169,7 @@ components:
         profileImageProvider:
           type: string
           description: |
-            Source of the author's profile image. Can be "schoolbox-profile" for Schoolbox managed portrait images, "generic-url" for direct URL links, or "schoolbox-image-file-hash" for file-based fetch images with a unique hash.
+            Source of the author's profile image. Can be "schoolbox-profile" for Schoolbox managed portrait images, "generic-url" for direct URL links, or "schoolbox-image-file-hash" for file-based fetch images with a unique hash. If this is set to "schoolbox-profile", Inklass may automatically retrieve any custom asociated images and populate the file hash.
           example: schoolbox-profile
         profileImage:
           type: string
@@ -205,7 +215,7 @@ components:
         link:
           type: string
           nullable: true
-          description: A URL related to the content or action of the notification.
+          description: A URL related to the content or action of the notification. If a push notification is being sent alongside this notification, the links should be verbatim across both. Examples can include '/news/617', 'inklass://clipboard/sessions?id=499160', 'inklass://tass/webview?encoded_path={{b64 encoded path, /parentlounge/blah}}', or 'https://google.com'
           format: uri
           example: https://google.com.au
         author:
@@ -234,7 +244,7 @@ components:
         icon:
           type: string
           nullable: true
-          description: A arbitrary image URL of an appropriate icon to be displayed in app alongside the notification.
+          description: A arbitrary image URL of an appropriate icon to be displayed in app alongside the notification. It is highly recommended this is used, ideally with a custom icon for that notification type.
           format: uri
         expiryDays:
           type: integer
@@ -243,7 +253,7 @@ components:
         link:
           type: string
           nullable: true
-          description: A URL related to the content or action of the notification.
+          description: A URL related to the content or action of the notification. If a push notification is being sent alongside this notification, the links should be verbatim across both. Examples can include '/news/617', 'inklass://clipboard/sessions?id=499160', 'inklass://tass/webview?encoded_path={{b64 encoded path, /parentlounge/blah}}', or 'https://google.com'
           format: uri
           example: https://google.com.au
         author:
@@ -265,6 +275,13 @@ components:
             user:
               type: object
               properties:
+                id:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: This is a platform-agnostic id generated by Inklass and uniquely identifies a user across our products and modules. An Inklass user is usually associated with other platform-specific users.
                 externalId:
                   oneOf:
                     - type: string
@@ -334,25 +351,25 @@ components:
                     - type: array
                       items:
                         type: string
-                  description: Associated username for the device, can be a single value or an array for matching any.
-                isTestFlight:
-                  type: boolean
-                  description: Flag to indicate if the device is using a TestFlight build.
-                pushNotificationStatus:
+                  description: Associated username for the device, can be a single value or an array for matching any. Ideally use the username field on the user audience as the device username is untrusted because its veracity not validated by the server.
+                fleet:
+                  type: string
+                  description: Usually 'production' or 'testflight'
+                pushPermission:
                   oneOf:
                     - type: string
                     - type: array
                       items:
                         type: string
                   description: Status of push notification settings on the device, can be a single value or an array for matching any.
-                schoolId:
+                organisationId:
                   oneOf:
                     - type: string
                     - type: array
                       items:
                         type: string
                   description: Identifier for the school related to the device, can be a single value or an array for matching any.
-                deviceUUID:
+                uuid:
                   oneOf:
                     - type: string
                     - type: array
