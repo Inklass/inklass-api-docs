@@ -16,7 +16,7 @@ properties:
   profileImageProvider:
     type: string
     description: |
-      Source of the author's profile image. Can be "schoolbox-profile" for Schoolbox managed portrait images, "generic-url" for direct URL links, or "schoolbox-image-file-hash" for file-based fetch images with a unique hash. If this is set to "schoolbox-profile", Inklass may automatically retrieve any custom asociated images and populate the file hash.
+      Source of the author's profile image. Can be "schoolbox-profile" for Schoolbox managed portrait images, "generic-url" for direct URL links, or "schoolbox-image-file-hash" for file-based fetch images with a unique hash.
     example: "schoolbox-profile"
 
   profileImage:

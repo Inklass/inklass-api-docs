@@ -13,7 +13,7 @@ post:
     Devices are grouped by an Inklass userId, each Inklass user is linked to platform-specific users. When a notification is marked as read by a device,
     devices with the same userId will also mark that notification as read in real-time. An undocumented API is available for fetching notification recipients with their read/send status.
     
-    Note that your audience reach is strictly limited by your access token scopes and (organisationsIds or organisationsUUIDs).
+    Note that your audience reach is strictly limited by your access token scopes and organisationsIds.
     
     **Required Scopes:** (one of)
     - inklass.users.school-admin
