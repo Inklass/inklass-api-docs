@@ -13,6 +13,8 @@ on:
     paths-ignore:
       - docs/builds/*
       - docs/builds.json
+permissions:
+  contents: write
 jobs:
   build:
     if: github.repository == 'Inklass/inklass-api-docs'
