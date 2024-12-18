@@ -36,12 +36,20 @@ tags:
     description: |
       Use Inklass's infrastructure to send and manage custom notifications. Support for custom notification settings is WIP.
 paths:
-  /services/integrations/notifications/send:
+  /api/v2/organisations/{organisationUUID}/notifications/send:
     post:
       operationId: notificationPost
       tags:
         - notifications
       summary: Send Notification
+      parameters:
+        - name: organisationUUID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the organisation to send the notification to. Found in the organisation's settings page.
       description: |
         Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. 
 
@@ -261,6 +269,16 @@ components:
             - $ref: '#/components/schemas/notificationAuthor'
             - type: object
               nullable: true
+        date:
+          type: string
+          nullable: true
+          description: This is useful if you'd like to send a notification that's happened in the past. Will default to the time of recieving the API call.
+          example: '2024-06-08T05:58:23.027Z'
+        status:
+          type: string
+          nullable: true
+          description: Possible values are 'read' and 'unread'. Defaults to 'unread'.
+          example: unread
         customPayload:
           type: object
           nullable: true

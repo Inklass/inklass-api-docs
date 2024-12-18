@@ -2,6 +2,14 @@ post:
   operationId: notificationPost
   tags: [notifications]
   summary: Send Notification
+  parameters:
+    - name: organisationUUID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: The UUID of the organisation to send the notification to. Found in the organisation's settings page.
   description: |
     Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. 
     
@@ -13,7 +21,7 @@ post:
     Devices are grouped by an Inklass userId, each Inklass user is linked to platform-specific users. When a notification is marked as read by a device,
     devices with the same userId will also mark that notification as read in real-time. An undocumented API is available for fetching notification recipients with their read/send status.
     
-    Note that your audience reach is strictly limited by your access token scopes and organisationsIds.
+    Note that your audience reach is strictly limited by your access token scopes and (organisationsIds or organisationsUUIDs).
     
     **Required Scopes:** (one of)
     - inklass.users.school-admin

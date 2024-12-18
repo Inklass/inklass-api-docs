@@ -31,7 +31,7 @@ properties:
     link:
         type: string
         nullable: true
-        description: A URL related to the content or action of the notification. If a push notification is being sent alongside this notification, the links should be verbatim across both. Examples can include '/news/617', 'inklass://clipboard/sessions?id=499160', or 'https://google.com'
+        description: A URL related to the content or action of the notification. If a push notification is being sent alongside this notification, the links should be verbatim across both. Examples can include '/news/617', 'inklass://clipboard/sessions?id=499160', 'inklass://tass/webview?encoded_path={{b64 encoded path, /parentlounge/blah}}', or 'https://google.com'
         format: uri
         example: "https://google.com.au"
 
@@ -40,6 +40,18 @@ properties:
             - $ref: './notificationAuthor.yaml'
             - type: object
               nullable: true
+
+    date:
+        type: string
+        nullable: true
+        description: This is useful if you'd like to send a notification that's happened in the past. Will default to the time of recieving the API call.
+        example: "2024-06-08T05:58:23.027Z"
+
+    status:
+        type: string
+        nullable: true
+        description: Possible values are 'read' and 'unread'. Defaults to 'unread'.
+        example: "unread"
 
     customPayload:
         type: object
