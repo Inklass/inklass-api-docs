@@ -2,6 +2,11 @@ post:
   operationId: notificationPost
   tags: [notifications]
   summary: Send Notification
+  parameters:
+    - name: organisationUUID
+      in: path
+      required: true
+      description: The UUID of the organisation to send the notification to. Found in the organisation's settings page.
   description: |
     Send push and/or in-app notifications to a specified audience. Push notifications are immediate and appear on device screens. In-app notifications are saved and displayed within the app interface. 
     

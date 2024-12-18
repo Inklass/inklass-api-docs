@@ -51,7 +51,7 @@ servers:
 
 paths:
 
-  /api/v2/organisations/{uuid}/notifications/send:
+  /api/v2/organisations/{organisationUUID}/notifications/send:
     $ref: 'paths/integrations@notifications@send.yaml'
 
 security:
